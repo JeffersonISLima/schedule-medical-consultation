@@ -7,8 +7,13 @@ document.getElementById('doctorSpecialty').addEventListener('change', () => {
       res.data.forEach((e) => {
         document.getElementById('doctorOption').innerHTML += `${e.name}`;
       });
-
-
     })
     .catch(err => console.log(err));
 });
+
+
+/* // Material
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.datepicker');
+  var instances = M.Datepicker.init(elems, options);
+}); */

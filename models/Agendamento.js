@@ -4,9 +4,9 @@ const { Schema } = mongoose;
 
 const appointmentSchema = new Schema({
   busy: { type: Boolean },
-  date: { type: String },
-  id_patient: { type: String },
-  id_doctor: { type: String },
+  date: { type: Date },
+  id_patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
+  id_doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
 });
 
 const appointment = mongoose.model('appointment', appointmentSchema);
