@@ -9,8 +9,6 @@ const DoctorSchema = new Schema({
   crm: { type: String },
   specialty: { type: String },
   email: { type: String },
-  /* telResidencial: { type: String },
-  cellphone: { type: String }, */
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
 });

@@ -1,5 +1,14 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.getElementById('doctorSpecialty').addEventListener('change', () => {
+  const selectValue = document.getElementById('doctorSpecialty').value;
+  axios.get(`/paciente/medicos/${selectValue}`)
+    .then((res) => {
+      console.log(res);
+      document.getElementById('doctorOption').innerHTML = '';
+      res.data.forEach((e) => {
+        document.getElementById('doctorOption').innerHTML += `${e.name}`;
+      });
 
-  console.log('IronGenerator JS imported successfully!');
 
-}, false);
+    })
+    .catch(err => console.log(err));
+});
