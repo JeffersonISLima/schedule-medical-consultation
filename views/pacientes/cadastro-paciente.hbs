@@ -1,5 +1,77 @@
-<h1>Cadastro de pacientes</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css ">
 
+<style>
+  body {
+    background-image: url(./images/background3.png);
+    background-size: cover;
+    color: #fff;
+  }
+</style>
+
+{{!-- login form --}}
+<form class="login" action="/paciente/cadastro" method="POST">
+  <div class="row">
+    <div class="col s12 14 offset-14">
+      <div class="card">
+        <div class="card-action red white-text">
+          <h3>Cadastro de paciente:</h3>
+        </div>
+        <div class="card-content">
+          <div class="form-field">
+            <label for="cpf">CPF:* </label>
+            <input type="text" name="cpf" required>
+          </div><br>
+
+          <div class="form-field">
+            <label for="name">Nome:* </label>
+            <input type="text" name="name" required>
+          </div><br>
+
+          <div class="form-field">
+            <label for="birthdate">Data de nascimento:* </label>
+            <input type="date" name="birthdate" required>
+          </div><br>
+
+          <div class="form-field">
+            <label for="telResidencial">Telefone residencial:* </label>
+            <input type="tel" name="telResidencial" pattern="[0-9]{2}-[0-9]{4}-[0-9]{4}" placeholder="11-9999-9999"
+              required>
+          </div><br>
+
+          <div class="form-field">
+            <label for="cellphone">Celular:* </label>
+            <input type="tel" name="cellphone" pattern="[0-9]{2}-[0-9]{5}-[0-9]{4}" placeholder="11-9999-9999" required>
+          </div><br>
+
+          <div class="form-field">
+            <label for="healthInsurance">Plano de saúde:* </label>
+            <input type="text" name="healthInsurance" required>
+          </div><br>
+
+          <div class="card-action red white-text">
+            <h3>Informações de acesso:</h3>
+          </div>
+          <div class="card-content">
+            <div class="form-field">
+              <label for="username">Nome de usuário:* </label>
+              <input type="text" name="username" required>
+            </div><br>
+
+            <div class="form-field">
+              <label for="password">Senha:* </label>
+              <input type="password" name="password">
+            </div><br>
+          </div>
+          <div class="form-field center-align">
+            <input id="button" class="btn-large red" type="submit" value="Enviar">
+          </div><br>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{{!-- 
 <div class="cadastro-medico-div-container">
   <h2>Informações pessoais</h2>
 
@@ -7,16 +79,22 @@
     <div class="div-dashed">
       <label for="cpf">CPF:* </label>
       <input type="text" name="cpf" required>
+      
       <label for="name">Nome:* </label>
       <input type="text" name="name" required>
+
       <label for="birthdate">Data de nascimento:* </label>
       <input type="date" name="birthdate" required>
+
       <label for="telResidencial">Telefone residencial:* </label>
       <input type="tel" name="telResidencial" pattern="[0-9]{2}-[0-9]{4}-[0-9]{4}" placeholder="11-9999-9999" required>
+      
       <label for="cellphone">Celular:* </label>
       <input type="tel" name="cellphone" pattern="[0-9]{2}-[0-9]{5}-[0-9]{4}" placeholder="11-9999-9999" required>
+      
       <label for="healthInsurance">Plano de saúde:* </label>
       <input type="text" name="healthInsurance" required>
+
     </div>
 
     <h2 class="cadastro-medico-h2">Informações de acesso</h2>
@@ -29,4 +107,4 @@
       <input type="button" value="Voltar" name="voltar" onclick="location.href='/';">
     </div>
   </form>
-</div>
+</div> --}}

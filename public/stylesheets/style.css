@@ -31,8 +31,9 @@ hr {
 
 .index-h1 {
   text-align: center;
-  min-height: 60px;
-  padding-top: 1%; }
+  padding-top: 1%; 
+  font-size: 40px;
+}
 
 .index-div-1 {
   margin-top: 5%;
@@ -71,5 +72,30 @@ hr {
   min-height: 6.9em;
   opacity: 0.8;
   color: white; }
+
+
+  /* form sign in */
+
+  .login {
+    margin-top: 30px;
+  }
+
+  .login .card {
+    background-color: rgba(0, 0, 0, .6);
+  }
+
+  .login label {
+    font-size: 16px;
+    color: #ccc;
+  }
+
+  .login input {
+    font-size: 22px !important;
+    color: #fff;
+  }
+
+  .login #button:hover {
+    padding: 0 40px;
+  } 
 
 /*# sourceMappingURL=style.css.map */

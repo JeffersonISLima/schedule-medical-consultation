@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,26 +8,30 @@
   <title>Shedule Medical Consultation</title>
   <link rel="stylesheet" href="/stylesheets/style.css" />
   <link rel="stylesheet" href="/stylesheets/reset.css">
-  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
+
+  {{!-- <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script> --}}
 </head>
+
 <body>
 
-<nav class="nav-bar">
-  <ul>    
-    <a class="nav-bar-item" href="#">Something</a>
-    <a class="nav-bar-item" href="#">Something</a>
-    <a class="nav-bar-item" href="#">About</a>
-  </ul>
-</nav>
+  <nav class="nav-bar">
+    <ul>
+      <a class="nav-bar-item" href="#">Something</a>
+      <a class="nav-bar-item" href="#">Something</a>
+      <a class="nav-bar-item" href="/paciente/cadastro">Sign Up</a>
+    </ul>
+  </nav>
 
-<div class="container borda">
-  {{{body}}}
-</div>
+  <div class="container borda">
+    {{{body}}}
+  </div>
 
-<footer class="footer">Footer</footer>
+  <footer class="footer">Footer</footer>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="/javascripts/script.js"></script>
 </body>
+
 </html>

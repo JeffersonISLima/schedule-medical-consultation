@@ -37,7 +37,7 @@ const app = express();
 
 // Autentication Patient
 app.use(session({
-  secret: "our-passport-local-strategy-app",
+  secret: 'our-passport-local-strategy-app',
   resave: true,
   saveUninitialized: true,
   cookie: { maxAge: 6000000 },
@@ -60,10 +60,10 @@ passport.use(new LocalStrategy((username, password, next) => {
       return next(err);
     }
     if (!user) {
-      return next(null, false, { message: "Incorrect username" });
+      return next(null, false, { message: 'Incorrect username' });
     }
     if (!bcrypt.compareSync(password, user.password)) {
-      return next(null, false, { message: "Incorrect password" });
+      return next(null, false, { message: 'Incorrect password' });
     }
     return next(null, user);
   });
@@ -108,12 +108,16 @@ const index = require('./routes/index');
 
 app.use('/', index);
 
-const medico = require('./routes/medico');
+/* const medico = require('./routes/medico');
 
-app.use('/medico', medico);
+app.use('/medico', medico); */
 
 const paciente = require('./routes/paciente');
 
 app.use('/paciente', paciente);
+
+/* const login = require('./routes/paciente');
+
+app.use('/paciente', login); */
 
 module.exports = app;

@@ -17,7 +17,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const ensureLogin = require('connect-ensure-login');
 const Paciente = require('../models/Paciente');
 const Medico = require('../models/Medico');
-const Agendamento = require('../views/pacientes/secret/agendamento-paciente');
+// const Agendamento = require('../views/pacientes/secret/agendamento-paciente');
+const Agendamento = require('../models/Agendamento');
 
 // Bcrypt to encrypt passwords
 const bcryptSalt = 10;
@@ -80,7 +81,7 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/paciente/agendamento',
-  failureRedirect: '/paciente/login',
+  failureRedirect: '/',
   failureFlash: false,
   passReqToCallback: true,
 }));
@@ -92,6 +93,14 @@ router.get('/agendamento', ensureLogin.ensureLoggedIn(), (req, res) => {
       res.render('./pacientes/secret/agendamento-paciente', { user: req.user.healthInsurance, specialty: result });
     })
     .catch(err => console.log(err));
+});
+
+// Fazendo aqui ---- verificar esse id
+router.post('/agendamento', ensureLogin.ensureLoggedIn(), (req, res) => {
+  // const { name } = req.body.name;  
+ /*  console.log({ user: req.user._id });
+  console.log(req.body);  */ 
+//  res.send(req.params.name);
 });
 
 router.get('/data-hora', ensureLogin.ensureLoggedIn(), (req, res) => {
@@ -108,10 +117,10 @@ router.get('/imprimir', ensureLogin.ensureLoggedIn(), (req, res) => {
 
 router.get('/medicos/:specialty', (req, res, next) => {
   const { specialty } = req.params;
-  console.log(req.params);
+  // console.log(req.params);
   Medico.find({ specialty })
     .then((response) => {
-      console.log('######################', response);
+    //  console.log('######################', response);
       res.send(response);
     })
     .catch((err) => {
