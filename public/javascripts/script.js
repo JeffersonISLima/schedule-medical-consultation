@@ -3,7 +3,7 @@ document.getElementById('doctorSpecialty').addEventListener('change', () => {
   axios.get(`/paciente/medicos/${selectValue}`)
     .then((res) => {
     //  console.log(res);
-      document.getElementById('doctorOption').innerHTML = '';
+      document.getElementById('doctorOption').innerHTML = ' ';
       res.data.forEach((e) => {
         document.getElementById('doctorOption').innerHTML += `${e.name}`;
       });

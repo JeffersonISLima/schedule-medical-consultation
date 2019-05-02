@@ -1,11 +1,10 @@
-// routes/auth-routes.js
+/* eslint-disable camelcase */
+// routes /paciente/etc...
 const express = require('express');
 
 const router = express.Router(); //  = authRoutes const authRoutes = express.Router();
 
-const mongoose = require('mongoose');
-
-/* const app = express(); */
+// const mongoose = require('mongoose');
 
 // Patient model
 const bcrypt = require('bcrypt');
@@ -17,7 +16,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const ensureLogin = require('connect-ensure-login');
 const Paciente = require('../models/Paciente');
 const Medico = require('../models/Medico');
-// const Agendamento = require('../views/pacientes/secret/agendamento-paciente');
 const Agendamento = require('../models/Agendamento');
 
 // Bcrypt to encrypt passwords
@@ -30,7 +28,14 @@ router.get('/cadastro', (req, res) => {
 
 router.post('/cadastro', (req, res, next) => {
   const {
-    username, password, cpf, name, birthdate, telResidencial, cellphone, healthInsurance,
+    username,
+    password,
+    cpf,
+    name,
+    birthdate,
+    telResidencial,
+    cellphone,
+    healthInsurance,
   } = req.body;
 
   if (username === '' || password === '') {
@@ -40,7 +45,7 @@ router.post('/cadastro', (req, res, next) => {
 
   Paciente.findOne({ username })
     .then((user) => {
-    //  console.log('caiu no then do find Medico')  Debug
+      //  console.log('caiu no then do find Medico')  Debug
       if (user !== null) {
         res.render('/cadastro', { message: 'The username already exists' });
         return;
@@ -62,10 +67,10 @@ router.post('/cadastro', (req, res, next) => {
 
       newPatient.save((err) => {
         if (err) {
-        //  console.log(err)          Debug
+          //  console.log(err)          Debug
           res.redirect('/cadastro');
         } else {
-        //  console.log('Pacinte salvo')     Debug
+          //  console.log('Pacinte salvo')     Debug
           res.redirect('/');
         }
       });
@@ -79,36 +84,63 @@ router.post('/cadastro', (req, res, next) => {
 router.get('/login', (req, res) => {
   res.render('./pacientes/login-paciente');
 });
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/paciente/agendamento',
-  failureRedirect: '/',
-  failureFlash: false,
-  passReqToCallback: true,
-}));
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/paciente/agendamento',
+    failureRedirect: '/',
+    failureFlash: false,
+    passReqToCallback: true,
+  }),
+);
 
 // Routes protected
 router.get('/agendamento', ensureLogin.ensureLoggedIn(), (req, res) => {
-  Medico.find().distinct('specialty')
+  Medico.find()
+    .distinct('specialty')
     .then((result) => {
-      res.render('./pacientes/secret/agendamento-paciente', { user: req.user.healthInsurance, specialty: result });
+      res.render('./pacientes/secret/agendamento-paciente', {
+        user: req.user,
+        specialty: result,
+      });
     })
     .catch(err => console.log(err));
 });
 
 // Fazendo aqui ---- verificar esse id
-router.post('/agendamento', ensureLogin.ensureLoggedIn(), (req, res) => {
-  // const { name } = req.body.name;  
- /*  console.log({ user: req.user._id });
-  console.log(req.body);  */ 
-//  res.send(req.params.name);
-});
+router.post('/agendamento', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  const {
+    group1, specialty, doctor, weekday, hour,
+  } = req.body;
+  // console.log('@@@@@@@@@@@@@10', req.body);
+  const newScheduling = new Agendamento({
+    group1,
+    specialty,
+    doctor,
+    weekday,
+    hour,
+    id_patient: req.user._id,
+  });
 
-router.get('/data-hora', ensureLogin.ensureLoggedIn(), (req, res) => {
-  res.render('./pacientes/secret/data-hora-paciente', { user: req.user });
+  // Add New Scheduling
+  newScheduling.save((err) => {
+    if (err) {
+      res.redirect('/paciente/agendamento');
+    } else {
+      // res.redirect('/?msg=Agendamento realizado com sucesso'); MENSAGEM DE SUCESSO
+      res.redirect(
+        '/paciente/confirmacao/?msg=Agendamento realizado com sucesso',
+      );
+    }
+  });
 });
 
 router.get('/confirmacao', ensureLogin.ensureLoggedIn(), (req, res) => {
-  res.render('./pacientes/secret/confirmar-dados-consulta-paciente', { user: req.user });
+  // res.render('./pacientes/secret/confirmar-dados-consulta-paciente', { user: req.user }, { msg: req.query.msg});
+  // res.render('index', { msg: req.query.msg}); MENSAGEM DE SUCESSO
+  res.render('./pacientes/secret/confirmar-dados-consulta-paciente', {
+    msg: req.query.msg,
+  });
 });
 
 router.get('/imprimir', ensureLogin.ensureLoggedIn(), (req, res) => {
@@ -120,12 +152,86 @@ router.get('/medicos/:specialty', (req, res, next) => {
   // console.log(req.params);
   Medico.find({ specialty })
     .then((response) => {
-    //  console.log('######################', response);
+      //  console.log('######################', response);
       res.send(response);
     })
     .catch((err) => {
       throw new Error(err);
     });
 });
+
+// Find one - History of consults
+router.get('/list', ensureLogin.ensureLoggedIn(), (req, res) => {
+//  console.log('**********************', req.params);
+  Agendamento.find({ id_patient: req.user._id }) // req.user._id user logado
+    .then((result) => {
+    // console.log('***********************', result);
+      res.render('./pacientes/secret/history', { user: result });
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
+
+// Delete one consult
+router.get('/del/:id', ensureLogin.ensureLoggedIn(), (req, res) => {
+  // console.log(req.params.id);
+  Agendamento.findOneAndDelete(req.params.id)
+    .then(() => {
+      res.redirect('/paciente/agendamento');
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
+
+// Edit get - consultation data
+router.get('/edit/:id', (req, res) => {
+  Agendamento.findById(req.params.id)
+    .then((result) => {
+      res.render('./pacientes/secret/edit-consultation', { patient: result });
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
+
+// Edit post - consultation data
+router.post('/edit/:id', (req, res) => {
+  Agendamento.findByIdAndUpdate(req.params.id, { $set: req.body })
+    .then(() => {
+      res.redirect('/paciente/list');
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
+
+// Edit get - personal data
+router.get('/edit/personal/:id', (req, res) => {
+  Paciente.findById(req.params.id)
+    .then((result) => {      
+      res.render('./pacientes/secret/edit-personal-data', { patient: result });
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
+
+// Edit post - personal data
+router.post('/edit/personal/:id', (req, res) => {
+  Paciente.findByIdAndUpdate(req.params.id, { $set: req.body })
+    .then(() => {
+      res.redirect('/paciente/agendamento');
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
+
+
+/* router.get('/data-hora', ensureLogin.ensureLoggedIn(), (req, res) => {
+  res.render('./pacientes/secret/data-hora-paciente', { user: req.user });
+}); */
 
 module.exports = router;

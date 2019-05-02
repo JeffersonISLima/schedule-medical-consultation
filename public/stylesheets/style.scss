@@ -86,3 +86,32 @@ hr {
   opacity: 0.8;
   color: white;   
 }
+
+
+/* form sign in and sign up */
+  
+.login {
+  margin-top: 30px;
+}
+
+.login .card {
+  background-color: rgba(0, 0, 0, .6);
+}
+
+.login label {
+  font-size: 16px;
+  color: #ccc;
+}
+
+.login input {
+  font-size: 22px !important;
+  color: #fff;
+}
+
+.login #button:hover {
+  padding: 0 40px;
+} 
+
+.center {
+  text-align: center;
+}

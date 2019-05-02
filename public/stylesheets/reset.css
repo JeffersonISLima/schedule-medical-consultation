@@ -2,22 +2,26 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+}
 
-  body {
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
-  
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
 a {
   text-decoration: none;
-  color: #00B7FF; }
+  color: #00b7ff;
+}
 
 a:hover {
-  color: red; }
+  color: red;
+}
 
-ul, ol, li {
-  list-style: none; }
+ul,
+ol,
+li {
+  list-style: none;
+}
 
 /* #### */
-
-
-

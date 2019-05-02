@@ -8,31 +8,45 @@
   }
 </style>
 
-{{!-- login form --}}
-<form class="login" action="/paciente/login" method="POST">
-  <div class="row">
-    <div class="col s12 14 offset-14">
-      <div class="card">
-        <div class="card-action red white-text">
-          <h3>Faça seu Login</h3>
-        </div>
-        <div class="card-content">
-          <div class="form-field">
-            <label for="username">Usuário</label>
-            <input type="text" id="username" name="username">
-          </div><br>
+{{!-- {{#if msg}}
+  <h1>{{msg}}</h1> MENSAGEM DE SUCESSO
+{{/if}} --}}
 
-          <div class="form-field">
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password">
-          </div><br>
-          <div class="form-field center-align">
-            {{!-- <a href="/paciente/login"><button>Sign In</button></a>
-          <a href="/paciente/agendamento"><button class="btn-large red">Login</button></a> --}}
-            <input id="button" class="btn-large red" type="submit" value="Login">
-          </div><br>
+<nav>
+  <div class="nav-wrapper">
+    <a href="" class="brand-logo"><img src="/images/logo3.png" alt="Logo"></a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a href="/paciente/cadastro">Sign Up</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  {{!-- login form --}}
+  <form class="login" action="/paciente/login" method="POST">
+    <div class="row">
+      <div class="col s12 14 offset-14">
+        <div class="card">
+          <div class="card-action red white-text">
+            <h3>Faça seu Login</h3>
+          </div>
+          <div class="card-content">
+            <div class="form-field">
+              <label for="username">Usuário</label>
+              <input type="text" id="username" name="username">
+            </div><br>
+
+            <div class="form-field">
+              <label for="password">Senha</label>
+              <input type="password" id="password" name="password">
+            </div><br>
+            <div class="form-field center-align">
+              <input id="button" class="btn-large red" type="submit" value="Login">
+            </div><br>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+
+</div>

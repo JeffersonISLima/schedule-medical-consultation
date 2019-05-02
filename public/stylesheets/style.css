@@ -31,9 +31,8 @@ hr {
 
 .index-h1 {
   text-align: center;
-  padding-top: 1%; 
-  font-size: 40px;
-}
+  min-height: 60px;
+  padding-top: 1%; }
 
 .index-div-1 {
   margin-top: 5%;
@@ -73,29 +72,25 @@ hr {
   opacity: 0.8;
   color: white; }
 
+/* form sign in and sign up */
+.login {
+  margin-top: 30px; }
 
-  /* form sign in */
+.login .card {
+  background-color: rgba(0, 0, 0, 0.6); }
 
-  .login {
-    margin-top: 30px;
-  }
+.login label {
+  font-size: 16px;
+  color: #ccc; }
 
-  .login .card {
-    background-color: rgba(0, 0, 0, .6);
-  }
+.login input {
+  font-size: 22px !important;
+  color: #fff; }
 
-  .login label {
-    font-size: 16px;
-    color: #ccc;
-  }
+.login #button:hover {
+  padding: 0 40px; }
 
-  .login input {
-    font-size: 22px !important;
-    color: #fff;
-  }
-
-  .login #button:hover {
-    padding: 0 40px;
-  } 
+.center {
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */
