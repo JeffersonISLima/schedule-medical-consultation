@@ -44,7 +44,7 @@ router.post('/cadastro', (req, res, next) => {
   }
 
   Paciente.findOne({ username })
-    .then((user) => {      
+    .then((user) => {
       if (user !== null) {
         res.render('/cadastro', { message: 'The username already exists' });
         return;
@@ -65,9 +65,9 @@ router.post('/cadastro', (req, res, next) => {
       });
 
       newPatient.save((err) => {
-        if (err) {         
+        if (err) {
           res.redirect('/cadastro');
-        } else {          
+        } else {
           res.redirect('/');
         }
       });
@@ -107,27 +107,34 @@ router.get('/agendamento', ensureLogin.ensureLoggedIn(), (req, res) => {
 router.post('/agendamento', ensureLogin.ensureLoggedIn(), (req, res, next) => {
   const {
     group1, specialty, doctor, date, hour,
-  } = req.body; 
-  const newScheduling = new Agendamento({
-    group1,
-    specialty,
-    doctor,
-    date,
-    hour,
-    id_patient: req.user._id,
-    id_doctor: req.user._id,    
-  });
+  } = req.body;
 
-  // Add New Scheduling
-  newScheduling.save((err) => {
-    if (err) {
-      res.redirect('/paciente/agendamento');
-    } else {
-      res.redirect(
-        '/paciente/confirmacao/?msg=Agendamento realizado com sucesso',
-      );
-    }
-  });
+  Medico.findOne({ name: doctor })
+    .then((doc) => {
+      const docId = doc._id;
+      const newScheduling = new Agendamento({
+        group1,
+        specialty,
+        doctor,
+        date,
+        hour,
+        id_patient: req.user._id,
+        id_doctor: docId,
+      });
+      // Add New Scheduling
+      newScheduling.save((err) => {
+        if (err) {
+          res.redirect('/paciente/agendamento');
+        } else {
+          res.redirect(
+            '/paciente/confirmacao/?msg=Agendamento realizado com sucesso',
+          );
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 router.get('/confirmacao', ensureLogin.ensureLoggedIn(), (req, res) => {
@@ -136,22 +143,31 @@ router.get('/confirmacao', ensureLogin.ensureLoggedIn(), (req, res) => {
   });
 });
 
-/* router.get('/imprimir', ensureLogin.ensureLoggedIn(), (req, res) => {
-  Agendamento.find({ id_patient: req.user._id }) // req.user._id user logado
-  .then((result) => {
-    res.render('./pacientes/secret/imprimir-paciente', { user: result });
-  })
-  .catch((err) => {
-    throw new Error(err);
-  });
+router.get('/imprimir', ensureLogin.ensureLoggedIn(), (req, res) => {
+  /* Agendamento.find({ id_patient: req.user._id }) // req.user._id user logado
+    .then((result) => {
+      console.log("########", result);
+
+      res.render('./pacientes/secret/imprimir-paciente', { patients: result });
+    })
+    .catch((err) => {
+      throw new Error(err);
+    }); */
+
+
+  Agendamento.findOne({ id_patient: req.user._id }).sort({'created_at': -1})//.limit(1) // req.user._id user logado
+    .then((result) => {
+      console.log('########', result);
+      res.render('./pacientes/secret/imprimir-paciente', { patient: result });
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
 });
-
-
-
 //  res.render('./pacientes/secret/imprimir-paciente', { user: req.user });
-}); */
 
-router.get('/medicos/:specialty', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+
+router.get('/medicos/:specialty', (req, res, next) => {
   const { specialty } = req.params;
   Medico.find({ specialty })
     .then((response) => {
@@ -162,8 +178,8 @@ router.get('/medicos/:specialty', ensureLogin.ensureLoggedIn(), (req, res, next)
     });
 });
 
-// Insert
-router.get('/date/:day/:dr', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+
+router.get('/date/:day/:dr', (req, res, next) => {
   const { day } = req.params;
   const { dr } = req.params;
 
@@ -171,8 +187,6 @@ router.get('/date/:day/:dr', ensureLogin.ensureLoggedIn(), (req, res, next) => {
     .then((response) => {
       Agendamento.find({ date: day, id_doctor: response[0]._id })
         .then((resDr) => {
-          console.log(resDr)
-          // respons are the spaces taken, i need the untakes
           res.send(resDr);
         })
         .catch((err) => {
@@ -200,7 +214,7 @@ router.get('/del/:id', ensureLogin.ensureLoggedIn(), (req, res) => {
   // console.log(req.params.id);
   Agendamento.findOneAndDelete(req.params.id)
     .then(() => {
-      res.redirect('/paciente/agendamento');
+      res.redirect('/paciente/list');
     })
     .catch((err) => {
       throw new Error(err);
@@ -232,7 +246,7 @@ router.post('/edit/:id', (req, res) => {
 // Edit get - personal data
 router.get('/edit/personal/:id', (req, res) => {
   Paciente.findById(req.params.id)
-    .then((result) => {      
+    .then((result) => {
       res.render('./pacientes/secret/edit-personal-data', { patient: result });
     })
     .catch((err) => {

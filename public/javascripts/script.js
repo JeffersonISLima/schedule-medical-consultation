@@ -27,4 +27,3 @@ document.getElementById('date').addEventListener('change', () => {
     })
     .catch(err => console.log(err));
 });
-

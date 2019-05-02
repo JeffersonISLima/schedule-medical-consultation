@@ -12,7 +12,8 @@ hr {
   margin-left: 20%; }
 
 .container {
-  min-height: 500px; }
+  min-height: 500px;
+}
 
 /* Fim layout.hbs */
 /* index.hbs */
@@ -70,7 +71,9 @@ hr {
   background: black;
   min-height: 6.9em;
   opacity: 0.8;
-  color: white; }
+  color: white; 
+  position: relative;
+}
 
 /* form sign in and sign up */
 .login {
@@ -93,4 +96,18 @@ hr {
 .center {
   text-align: center; }
 
+  .container-flex {    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: auto;
+    min-height: 350px;      
+  }
+
+  .footer-h6 {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 /*# sourceMappingURL=style.css.map */
