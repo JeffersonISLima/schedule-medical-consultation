@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const DoctorSchema = new Schema({
-  /* username: { type: String },
-  password: { type: String }, */
   name: { type: String },
   crm: { type: String },
   specialty: { type: String },

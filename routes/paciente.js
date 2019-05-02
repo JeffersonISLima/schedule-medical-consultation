@@ -44,8 +44,7 @@ router.post('/cadastro', (req, res, next) => {
   }
 
   Paciente.findOne({ username })
-    .then((user) => {
-      //  console.log('caiu no then do find Medico')  Debug
+    .then((user) => {      
       if (user !== null) {
         res.render('/cadastro', { message: 'The username already exists' });
         return;
@@ -66,11 +65,9 @@ router.post('/cadastro', (req, res, next) => {
       });
 
       newPatient.save((err) => {
-        if (err) {
-          //  console.log(err)          Debug
+        if (err) {         
           res.redirect('/cadastro');
-        } else {
-          //  console.log('Pacinte salvo')     Debug
+        } else {          
           res.redirect('/');
         }
       });
@@ -107,19 +104,18 @@ router.get('/agendamento', ensureLogin.ensureLoggedIn(), (req, res) => {
     .catch(err => console.log(err));
 });
 
-// Fazendo aqui ---- verificar esse id
 router.post('/agendamento', ensureLogin.ensureLoggedIn(), (req, res, next) => {
   const {
-    group1, specialty, doctor, weekday, hour,
-  } = req.body;
-  // console.log('@@@@@@@@@@@@@10', req.body);
+    group1, specialty, doctor, date, hour,
+  } = req.body; 
   const newScheduling = new Agendamento({
     group1,
     specialty,
     doctor,
-    weekday,
+    date,
     hour,
     id_patient: req.user._id,
+    id_doctor: req.user._id,    
   });
 
   // Add New Scheduling
@@ -127,7 +123,6 @@ router.post('/agendamento', ensureLogin.ensureLoggedIn(), (req, res, next) => {
     if (err) {
       res.redirect('/paciente/agendamento');
     } else {
-      // res.redirect('/?msg=Agendamento realizado com sucesso'); MENSAGEM DE SUCESSO
       res.redirect(
         '/paciente/confirmacao/?msg=Agendamento realizado com sucesso',
       );
@@ -136,24 +131,53 @@ router.post('/agendamento', ensureLogin.ensureLoggedIn(), (req, res, next) => {
 });
 
 router.get('/confirmacao', ensureLogin.ensureLoggedIn(), (req, res) => {
-  // res.render('./pacientes/secret/confirmar-dados-consulta-paciente', { user: req.user }, { msg: req.query.msg});
-  // res.render('index', { msg: req.query.msg}); MENSAGEM DE SUCESSO
   res.render('./pacientes/secret/confirmar-dados-consulta-paciente', {
     msg: req.query.msg,
   });
 });
 
-router.get('/imprimir', ensureLogin.ensureLoggedIn(), (req, res) => {
-  res.render('./pacientes/secret/imprimir-paciente', { user: req.user });
+/* router.get('/imprimir', ensureLogin.ensureLoggedIn(), (req, res) => {
+  Agendamento.find({ id_patient: req.user._id }) // req.user._id user logado
+  .then((result) => {
+    res.render('./pacientes/secret/imprimir-paciente', { user: result });
+  })
+  .catch((err) => {
+    throw new Error(err);
+  });
 });
 
-router.get('/medicos/:specialty', (req, res, next) => {
+
+
+//  res.render('./pacientes/secret/imprimir-paciente', { user: req.user });
+}); */
+
+router.get('/medicos/:specialty', ensureLogin.ensureLoggedIn(), (req, res, next) => {
   const { specialty } = req.params;
-  // console.log(req.params);
   Medico.find({ specialty })
     .then((response) => {
-      //  console.log('######################', response);
       res.send(response);
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
+
+// Insert
+router.get('/date/:day/:dr', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+  const { day } = req.params;
+  const { dr } = req.params;
+
+  Medico.find({ name: dr })
+    .then((response) => {
+      Agendamento.find({ date: day, id_doctor: response[0]._id })
+        .then((resDr) => {
+          console.log(resDr)
+          // respons are the spaces taken, i need the untakes
+          res.send(resDr);
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
     })
     .catch((err) => {
       throw new Error(err);
@@ -162,10 +186,8 @@ router.get('/medicos/:specialty', (req, res, next) => {
 
 // Find one - History of consults
 router.get('/list', ensureLogin.ensureLoggedIn(), (req, res) => {
-//  console.log('**********************', req.params);
   Agendamento.find({ id_patient: req.user._id }) // req.user._id user logado
     .then((result) => {
-    // console.log('***********************', result);
       res.render('./pacientes/secret/history', { user: result });
     })
     .catch((err) => {
@@ -228,10 +250,5 @@ router.post('/edit/personal/:id', (req, res) => {
       throw new Error(err);
     });
 });
-
-
-/* router.get('/data-hora', ensureLogin.ensureLoggedIn(), (req, res) => {
-  res.render('./pacientes/secret/data-hora-paciente', { user: req.user });
-}); */
 
 module.exports = router;

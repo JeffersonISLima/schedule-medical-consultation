@@ -1,4 +1,4 @@
-// routes/auth-routes.js
+/* // routes/auth-routes.js
 const express = require('express');
 
 const router = express.Router(); //  = authRoutes const authRoutes = express.Router();
@@ -91,4 +91,5 @@ router.get('/login', (req, res) => {
 
 /* FALTA FAZER AS ROTAS POST DE FORMULÁRIO */
 
-module.exports = router;
+*/
+//module.exports = router;
